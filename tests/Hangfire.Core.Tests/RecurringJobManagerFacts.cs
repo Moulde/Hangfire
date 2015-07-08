@@ -106,6 +106,14 @@ namespace Hangfire.Core.Tests
             Assert.Equal("cronExpression", exception.ParamName);
         }
 
+	 	[Fact]
+        public void AddOrUpdate_DoesNotThrowsAnException_WhenCronExpression_HaveSeconds()
+        {
+            var manager = CreateManager();
+	   
+            Assert.DoesNotThrow(() => manager.AddOrUpdate(_id, _job, "* * * * * 1"));
+        }
+
         [Fact]
         public void AddOrUpdate_AddsAJob_ToTheRecurringJobsSet()
         {

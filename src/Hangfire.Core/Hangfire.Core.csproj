@@ -41,10 +41,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CronExpressionDescriptor">
-      <HintPath>..\..\packages\CronExpressionDescriptor.1.10.1\lib\net35\CronExpressionDescriptor.dll</HintPath>
+      <HintPath>..\..\packages\CronExpressionDescriptor.1.13.0\lib\net35\CronExpressionDescriptor.dll</HintPath>
     </Reference>
     <Reference Include="NCrontab">
-      <HintPath>..\..\packages\ncrontab.1.0.0\lib\NCrontab.dll</HintPath>
+      <HintPath>..\..\packages\ncrontab.2.0.0\lib\net20\NCrontab.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -81,6 +81,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AwaitingJobsPage.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="MinuteSchedulerResolution.cs" />
+    <Compile Include="SchedulerResolution.cs" />
+    <Compile Include="SecondSchedulerResolution.cs" />
+    <Compile Include="Server\EverySecondThrottler.cs" />
+    <Compile Include="Server\Throttler.cs" />
     <Compile Include="States\AwaitingState.cs" />
     <Compile Include="ContinuationsSupportAttribute.cs" />
     <Compile Include="JobContinuationOptions.cs" />

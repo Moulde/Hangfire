@@ -1,5 +1,6 @@
 ﻿// This file is part of Hangfire.
-// Copyright © 2013-2014 Sergey Odinokov.
+// Copyright � 2013-2014 Sergey Odinokov.
+// 
 // Hangfire is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as 
 // published by the Free Software Foundation, either version 3 
@@ -14,23 +15,30 @@
 // License along with Hangfire. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Threading;
+using Hangfire.Server;
 
-namespace Hangfire.Server
+namespace Hangfire
 {
-	internal class EveryMinuteThrottler : Throttler
+	internal class MinuteSchedulerResolution : SchedulerResolution
 	{
-		public override void Throttle(CancellationToken token)
+		internal override IThrottler CreateThrottler()
 		{
-			while (DateTime.Now.Second != 0)
-			{
-				WaitASecondOrThrowIfCanceled(token);
-			}
+			return new EveryMinuteThrottler();
 		}
 
-		public override void Delay(CancellationToken token)
+		internal override TimeSpan GetSchedulePollingInterval()
 		{
-			WaitASecondOrThrowIfCanceled(token);
+			return TimeSpan.FromSeconds(15);
+		}
+
+		internal override TimeSpan GetJobInitializationWaitTimeout()
+		{
+			return TimeSpan.FromMinutes(1);
+		}
+
+		internal override DateTime CalculateNowInstant(DateTime nowInstant, TimeZoneInfo timeZone, Func<DateTime, DateTime> getNextOccurrence)
+		{
+			return nowInstant.AddSeconds(-nowInstant.Second);
 		}
 	}
 }

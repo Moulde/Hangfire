@@ -132,9 +132,9 @@ namespace Hangfire
         {
             try
             {
-                var schedule = CrontabSchedule.Parse(cronExpression);
-                schedule.GetNextOccurrence(DateTime.UtcNow);
-            }
+				var parts = cronExpression.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+				var schedule = CrontabSchedule.Parse(cronExpression, new CrontabSchedule.ParseOptions { IncludingSeconds = (parts.Length >= 6) });
+			}
             catch (Exception ex)
             {
                 throw new ArgumentException("CRON expression is invalid. Please see the inner exception for details.", "cronExpression", ex);

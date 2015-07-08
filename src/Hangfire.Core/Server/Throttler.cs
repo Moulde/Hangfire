@@ -1,5 +1,6 @@
 ﻿// This file is part of Hangfire.
 // Copyright © 2013-2014 Sergey Odinokov.
+// 
 // Hangfire is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as 
 // published by the Free Software Foundation, either version 3 
@@ -18,19 +19,15 @@ using System.Threading;
 
 namespace Hangfire.Server
 {
-	internal class EveryMinuteThrottler : Throttler
+	internal abstract class Throttler : IThrottler
 	{
-		public override void Throttle(CancellationToken token)
+		protected static void WaitASecondOrThrowIfCanceled(CancellationToken token)
 		{
-			while (DateTime.Now.Second != 0)
-			{
-				WaitASecondOrThrowIfCanceled(token);
-			}
+			token.WaitHandle.WaitOne(TimeSpan.FromSeconds(1));
+			token.ThrowIfCancellationRequested();
 		}
 
-		public override void Delay(CancellationToken token)
-		{
-			WaitASecondOrThrowIfCanceled(token);
-		}
+		public abstract void Throttle(CancellationToken token);
+		public abstract void Delay(CancellationToken token);
 	}
 }
