@@ -34,14 +34,15 @@ namespace Hangfire
         {
             WorkerCount = Math.Min(Environment.ProcessorCount * 5, MaxDefaultWorkerCount);
             Queues = new[] { EnqueuedState.DefaultQueue };
-            ShutdownTimeout = BackgroundProcessingServer.DefaultShutdownTimeout;
-            SchedulePollingInterval = DelayedJobScheduler.DefaultPollingDelay;
             HeartbeatInterval = ServerHeartbeat.DefaultHeartbeatInterval;
             ServerTimeout = ServerWatchdog.DefaultServerTimeout;
             ServerCheckInterval = ServerWatchdog.DefaultCheckInterval;
             
             FilterProvider = null;
             Activator = null;
+
+            ShutdownTimeout = TimeSpan.FromSeconds(15);
+			SchedulePollingInterval = SchedulerResolution.Current.GetSchedulePollingInterval();
         }
 
         [Obsolete("Server Id is auto-generated now, and this option does not make sense anymore. Will be removed in 2.0.0.")]

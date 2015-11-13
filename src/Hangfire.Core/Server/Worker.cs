@@ -40,7 +40,7 @@ namespace Hangfire.Server
     /// <seealso cref="EnqueuedState"/>
     public class Worker : IBackgroundProcess
     {
-        private static readonly TimeSpan JobInitializationWaitTimeout = TimeSpan.FromMinutes(1);
+		private static readonly TimeSpan JobInitializationWaitTimeout = SchedulerResolution.Current.GetJobInitializationWaitTimeout();
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
         private readonly string _workerId;

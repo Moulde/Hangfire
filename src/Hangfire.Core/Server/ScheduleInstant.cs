@@ -41,11 +41,10 @@ namespace Hangfire.Server
             _timeZone = timeZone;
             _schedule = schedule;
 
-            NowInstant = nowInstant.AddSeconds(-nowInstant.Second);
-            NextInstant = TimeZoneInfo.ConvertTime(
-                _schedule.GetNextOccurrence(TimeZoneInfo.ConvertTime(NowInstant, TimeZoneInfo.Utc, _timeZone)),
-                _timeZone,
-                TimeZoneInfo.Utc);
+			NowInstant = SchedulerResolution.Current.CalculateNowInstant(nowInstant, timeZone, _schedule.GetNextOccurrence);
+            NextInstant = TimeZoneInfo.ConvertTimeToUtc(
+                _schedule.GetNextOccurrence(TimeZoneInfo.ConvertTimeFromUtc(NowInstant, _timeZone)),
+                _timeZone);
         }
 
         public DateTime NowInstant { get; private set; }
